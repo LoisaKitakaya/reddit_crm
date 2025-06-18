@@ -1,4 +1,9 @@
 from django.contrib import admin
+from django.urls import path
+from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.core.management import call_command
+from django.template.response import TemplateResponse
 from .models import Lead, Post
 
 
@@ -46,6 +51,42 @@ class LeadAdmin(admin.ModelAdmin):
     )
     inlines = [PostInline]
     list_per_page = 25
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "generate-leads/",
+                self.admin_site.admin_view(self.generate_leads_view),
+                name="generate_leads",
+            ),
+        ]
+        return custom_urls + urls
+
+    def generate_leads_view(self, request):
+        if request.method == "POST":
+            try:
+                posts_limit = int(request.POST.get("posts_limit", 10))
+                call_command("generate_leads", posts_limit=posts_limit)
+                self.message_user(
+                    request,
+                    f"Successfully generated leads with posts_limit={posts_limit}",
+                    level=messages.SUCCESS,
+                )
+            except Exception as e:
+                self.message_user(
+                    request, f"Error generating leads: {str(e)}", level=messages.ERROR
+                )
+            return HttpResponseRedirect("../")
+        context = {
+            **self.admin_site.each_context(request),
+            "title": "Generate Leads",
+            "opts": self.model._meta,
+            "posts_limit": 10,
+        }
+        return TemplateResponse(
+            request, "admin/leads/lead/generate_leads.html", context
+        )
 
 
 @admin.register(Post)

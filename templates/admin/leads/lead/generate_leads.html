@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %} {% block content %}
+<div class="module">
+  <h1>Generate Leads from Reddit</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <label for="posts_limit">Posts Limit per Subreddit:</label>
+      <input
+        type="number"
+        name="posts_limit"
+        value="{{ posts_limit }}"
+        min="1"
+        required
+      />
+    </div>
+    <div class="submit-row">
+      <input type="submit" value="Generate Leads" class="default" />
+      <a href="../" class="button">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
