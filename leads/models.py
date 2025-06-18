@@ -77,6 +77,14 @@ class Lead(models.Model):
 
 
 class Post(models.Model):
+    TASK = "task"
+    OFFER = "offer"
+
+    TRIGGER = [
+        (TASK, "Task"),
+        (OFFER, "Offer"),
+    ]
+
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -100,6 +108,12 @@ class Post(models.Model):
     )
     post_category = models.CharField(
         max_length=100,
+        blank=True,
+        null=True,
+    )
+    post_trigger = models.CharField(
+        max_length=20,
+        choices=TRIGGER,
         blank=True,
         null=True,
     )

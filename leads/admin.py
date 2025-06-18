@@ -10,12 +10,14 @@ class PostInline(admin.TabularInline):
         "post_title",
         "post_category",
         "subreddit",
+        "post_trigger",
     )
     readonly_fields = (
         "reddit_post_id",
         "post_title",
         "post_category",
         "subreddit",
+        "post_trigger",
     )
 
 
@@ -53,9 +55,10 @@ class PostAdmin(admin.ModelAdmin):
         "reddit_post_id",
         "post_owner",
         "subreddit",
+        "post_trigger",
         "post_time",
     )
-    list_filter = ("subreddit", "post_category")
+    list_filter = ("subreddit", "post_category", "post_trigger")
     search_fields = (
         "post_title",
         "reddit_post_id",
@@ -71,6 +74,7 @@ class PostAdmin(admin.ModelAdmin):
         "post_owner",
         "subreddit",
         "post_category",
+        "post_trigger",
         "post_time",
     )
     list_per_page = 25
