@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-=p==-^(3j(^-wf2f%dl3tc!8_bd$c((#e9!dzav4^vpzymrpj8'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,27 +44,28 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = 'app.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
@@ -116,7 +121,105 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / "static"
+
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Custom configurations
+
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+USER_AGENT = os.getenv("USER_AGENT")
+REFRESH_TOKEN = os.getenv("REFRESH_TOKEN")
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_MODEL = "gemini-2.0-flash-001"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = os.getenv("EMAIL_SENDER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+TARGET_SUBS = [
+    "slavelabour",
+    "WebDeveloperJobs",
+    "forhire",
+    "freelance_forhire",
+    "DoneDirtCheap",
+    "VirtualAssistant",
+]
+
+OFFER_TRIGGER_PHRASES = [
+    "[OFFER]",
+    "[Offer]",
+    "[offer]",
+    "[FOR HIRE]",
+    "[For Hire]",
+    "[For hire]",
+    "[for hire]",
+]
+
+TASK_TRIGGER_PHRASES = [
+    "[TASK]",
+    "[Task]",
+    "[task]",
+    "[HIRING]",
+    "[Hiring]",
+    "[hiring]",
+]
+
+JOB_CATEGORIES = """
+Types of jobs:
+
+1. Social Media Management & Digital Marketing
+Description: Encompasses tasks and services focused on managing, growing, and optimizing social media presence across platforms like TikTok, Instagram, Twitter, LinkedIn, Reddit, and others. Includes content creation (posts, reels, stories), automation, account growth strategies, influencer partnerships, community engagement, paid ad campaigns, analytics reporting, and social media branding. Also covers broader digital marketing tasks such as SEO optimization for social platforms, email marketing integration, and cross-platform content strategies.
+Examples: social media manager, TikTok content creator, Instagram growth specialist, LinkedIn profile optimizer, Facebook ad manager, Twitter community manager, SEO specialist, digital marketer, content strategist, influencer marketing, Reddit poster, email marketer, analytics expert, branding consultant, ad campaign manager
+
+2. Web & Mobile Development
+Description: Involves designing, developing, and maintaining websites, mobile applications, and web-based tools. Includes front-end and back-end development, UI/UX design, integration of APIs or third-party services (e.g., Zoom, payment gateways), chatbot implementation, AI-powered website setups, and e-commerce platforms like Shopify. Also covers app development using frameworks like Flutter, database management, and DevOps tasks such as server setup or cloud deployment.
+Examples: web developer, mobile app developer, full-stack developer, frontend developer, backend developer, UI/UX designer, WordPress developer, Shopify developer, Flutter developer, API integrator, chatbot developer, database administrator, DevOps engineer, cloud architect, website builder, e-commerce developer
+
+3. Graphic Design & Visual Arts
+Description: Covers the creation, editing, and enhancement of visual content for digital or print media. Includes logo design, emotes, pixel art, chibi illustrations, digital portraits, tattoo designs, book covers, marketing collateral (flyers, banners), and 3D animation. Also encompasses UI/UX design for apps/websites, motion graphics, and branding packages, ensuring visually appealing and cohesive aesthetics for businesses or personal projects.
+Examples: graphic designer, logo designer, illustrator, 3D animator, motion graphics artist, tattoo designer, book cover designer, flyer designer, banner creator, emote artist, pixel art designer, digital artist, UI designer, branding designer, visual artist, animation specialist
+
+4. Video Editing & Multimedia Production
+Description: Focuses on producing and editing video and audio content for platforms like YouTube, Instagram, or podcasts. Includes short-form video editing (e.g., TikTok Shorts), compilation videos, voiceovers, motion graphics, VFX lighting, and sound design. Also covers multimedia tasks like podcast editing, video summarization, and content repurposing (e.g., turning videos into blog posts or social media clips), ensuring high-quality, platform-optimized output.
+Examples: video editor, YouTube content editor, TikTok shorts editor, podcast editor, voiceover artist, sound designer, VFX artist, motion graphics editor, video producer, audio editor, multimedia creator, content repurposer, short-form video creator, compilation video editor, audio cleanup specialist, video production assistant
+
+5. Virtual Assistance & Administrative Support
+Description: Provides remote administrative, organizational, and operational support for businesses or individuals. Includes data entry, email list building, scheduling, logistics coordination, project management, HR tasks, and customer support. Also covers specialized assistance like productivity coaching, accountability partnering, Notion-based planning, and recruitment support, tailored to streamline workflows and enhance efficiency.
+Examples: virtual assistant, administrative assistant, data entry clerk, customer support representative, project manager, scheduler, HR assistant, lead generation specialist, email list builder, productivity coach, accountability partner, Notion planner, recruitment coordinator, logistics coordinator, executive assistant, task manager
+
+6. Content Writing & Editorial Services
+Description: Encompasses creating, editing, and optimizing written content for various purposes, including blogs, SEO articles, social media posts, scripts, resumes, and academic essays. Includes niche writing (e.g., iGaming, casino content), proofreading, content summarization (e.g., YouTube videos or podcasts), and technical writing. Also covers creative writing like comic book scripts and editorial services to ensure clarity, engagement, and professionalism.
+Examples: content writer, SEO writer, copywriter, resume writer, proofreader, editor, technical writer, blog writer, scriptwriter, comic book writer, iGaming writer, casino content writer, social media post writer, article summarizer, academic writer, editorial assistant, ghostwriter
+
+7. Sales, Outreach & Business Development
+Description: Focuses on generating revenue and expanding business opportunities through sales, lead generation, and outreach. Includes cold DM campaigns, B2B/B2C sales, affiliate marketing, dropshipping ad management, and client acquisition strategies. Also covers specialized roles like OnlyFans sales agents, theming industry sales, and lead nurturing through CRM tools, emphasizing measurable results and client growth.
+Examples: sales representative, business development manager, affiliate marketer, lead generator, cold DM specialist, OnlyFans sales agent, dropshipping marketer, B2B sales, B2C sales, client acquisition specialist, CRM manager, outreach coordinator, sales consultant, lead nurturing specialist, commission-based seller
+
+8. Software Development & Technical Support
+Description: Involves advanced technical tasks like software development, AI integration, and IT support. Includes programming in languages like Python, Rust, or Node.js, setting up local AI assistants (e.g., SUNA, OpenManus), and developing custom software solutions. Also covers IT tasks like server management, cybersecurity, software troubleshooting, and automation scripting, catering to both business and individual tech needs.
+Examples: software developer, AI engineer, IT support specialist, Python programmer, server administrator, cybersecurity analyst, automation engineer, Node.js developer, Rust developer, AI assistant setup, technical support specialist, cloud infrastructure specialist, software troubleshooter, DevOps specialist, programmer
+
+9. Gaming & Interactive Media
+Description: Encompasses tasks and services related to gaming and interactive media, including performing in-game tasks, creating gaming content, and developing game-related assets. Includes editing gaming clips for social media platforms, playtesting, account boosting, and designing game art or UI/UX. covers Also emerging covers areas like esports content creation and interactive media for marketing campaigns.
+Examples: game developer, esports content creator, game tester, game art designer, UI/UX designer for games interactive, media creator, specialist playtest, esports editor, gaming clip editor, account booster, game UI/UX designer, game content creator, interactive media developer, gaming specialist, playtesting specialist
+
+10. Miscellaneous Freelance Services
+Description: Captures diverse, non-specialized tasks and offers that don’t fit into other categories. Includes account creation (e.g., Upwork accounts, Crowdtap accounts,), karma trading, KYC verification, and vague or one-off tasks that. Also covers experimental services like AI video creation with videos, meme creation for ads, and for other niche or unconventional freelance gigs that require minimal expertise or unique arrangements.
+Examples: account creator, KYC verifier, meme creator, AI video creator, package receiver, general helper, karma trader, one-off task worker, Upwork account creator, Crowdtap farmer, quick task completer, niche gig worker, experimental service provider
+"""
