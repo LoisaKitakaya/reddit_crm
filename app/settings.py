@@ -136,6 +136,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom configurations
 
+ORGANIZATION_NAME = os.getenv("ORGANIZATION_NAME")
+
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 USER_AGENT = os.getenv("USER_AGENT")
