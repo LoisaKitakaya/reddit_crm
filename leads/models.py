@@ -73,7 +73,7 @@ class Lead(models.Model):
         verbose_name_plural = "Lead Profiles"
 
     def __str__(self):
-        return f"{self.reddit_username} ({self.id})"
+        return f"{self.reddit_username}"
 
 
 class Post(models.Model):
@@ -134,4 +134,4 @@ class Post(models.Model):
         verbose_name_plural = "Reddit Posts"
 
     def __str__(self):
-        return f"{self.post_title} ({self.reddit_post_id})"
+        return f"{self.post_title}"
