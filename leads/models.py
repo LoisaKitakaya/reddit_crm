@@ -101,7 +101,6 @@ class Post(models.Model):
     )
     post_url = models.URLField(
         max_length=200,
-        unique=True,
     )
     post_title = models.CharField(
         max_length=300,
