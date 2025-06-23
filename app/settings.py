@@ -162,6 +162,7 @@ TARGET_SUBS = [
     "freelance_forhire",
     "DoneDirtCheap",
     "VirtualAssistant",
+    "B2BForHire",
 ]
 
 OFFER_TRIGGER_PHRASES = [
