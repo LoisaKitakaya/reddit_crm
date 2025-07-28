@@ -158,12 +158,15 @@ EMAIL_USE_SSL = False
 TARGET_SUBS = [
     "slavelabour",
     "WebDeveloperJobs",
+    "DeveloperJobs",
     "forhire",
     "freelance_forhire",
     "DoneDirtCheap",
     "VirtualAssistant",
     "B2BForHire",
     "jobbit",
+    "PythonJobs",
+    "remotepython",
 ]
 
 OFFER_TRIGGER_PHRASES = [
