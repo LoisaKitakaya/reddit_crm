@@ -158,14 +158,17 @@ EMAIL_USE_SSL = False
 TARGET_SUBS = [
     "slavelabour",
     "WebDeveloperJobs",
+    "WebDevJobs",
     "DeveloperJobs",
     "forhire",
     "freelance_forhire",
+    "programmers_forhire",
     "DoneDirtCheap",
     "VirtualAssistant",
     "B2BForHire",
     "jobbit",
     "PythonJobs",
+    "CodingJobs",
     "remotepython",
 ]
 
